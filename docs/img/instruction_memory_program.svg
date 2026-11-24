@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1134" height="754" viewBox="0 0 1134 754" font-family="DejaVu Sans Mono, Menlo, Consolas, monospace" font-size="15">
+<defs>
+<marker id="a-fail" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c0392b"/></marker>
+<marker id="a-ok" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1e8449"/></marker>
+<marker id="a-end" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#555555"/></marker>
+</defs>
+<rect width="1134" height="754" fill="#ffffff"/>
+<text x="567.0" y="43" text-anchor="middle" font-size="19" font-weight="bold" fill="#111">Memória de Instruções — programa do jogo</text>
+<text x="116" y="78" fill="#999"> 0</text>
+<text x="152.0" y="78" fill="#111" font-weight="bold">lw x5, 12(x0)</text>
+<text x="413.0" y="78" fill="#444">seta posição 0x5 (registrador) como 0xC (memória)</text>
+<text x="116" y="103" fill="#999"> 1</text>
+<text x="152.0" y="103" fill="#111" font-weight="bold">lw x1, 0(x0)</text>
+<text x="413.0" y="103" fill="#444">seta register 0x1 como o número aleatório gerado (0x0 da memória)</text>
+<text x="116" y="128" fill="#999"> 2</text>
+<text x="152.0" y="128" fill="#111" font-weight="bold">lw x2, 1(x0)</text>
+<text x="413.0" y="128" fill="#444">seta register 0x2 como o número de tentativas máximo (0x1 da memória)</text>
+<text x="152.0" y="165" fill="#777" font-style="italic">/* tentativa 1 */</text>
+<text x="116" y="190" fill="#999"> 3</text>
+<text x="152.0" y="190" fill="#111" font-weight="bold">beq x2, x0, 40</text>
+<text x="296.0" y="190" fill="#c0392b">→ 43</text>
+<text x="413.0" y="190" fill="#444">se 0x2 (tentativas feitas) - 0x0 (0) == 0, número de tentativas atual é 0</text>
+<text x="116" y="215" fill="#999"> 4</text>
+<text x="152.0" y="215" fill="#111" font-weight="bold">lw x3, 2(x0)</text>
+<text x="413.0" y="215" fill="#444">seta register 0x3 (tentativa atual) como a tentativa 1 (0x2 da memória)</text>
+<text x="116" y="240" fill="#999"> 5</text>
+<text x="152.0" y="240" fill="#111" font-weight="bold">beq x1, x3, 40</text>
+<text x="296.0" y="240" fill="#1e8449">→ 45</text>
+<text x="413.0" y="240" fill="#444">se 0x1 (senha) - 0x3 (tentativa atual) == 0, tentativa atual esta certa</text>
+<text x="116" y="265" fill="#999"> 6</text>
+<text x="152.0" y="265" fill="#111" font-weight="bold">sub x2, x2, x5</text>
+<text x="413.0" y="265" fill="#444">seta registrador 0x2 (tentativas feitas) como 0x2 - 0x5 (posição valendo 1)</text>
+<text x="152.0" y="302" fill="#777">…   tentativas 2 a 9 (posições 7–38): mesmo padrão</text>
+<text x="152.0" y="339" fill="#777" font-style="italic">/* tentativa 10 */</text>
+<text x="116" y="364" fill="#999">39</text>
+<text x="152.0" y="364" fill="#111" font-weight="bold">beq x2, x0, 4</text>
+<text x="287.0" y="364" fill="#c0392b">→ 43</text>
+<text x="413.0" y="364" fill="#444">se 0x2 (tentativas feitas) - 0x0 (0) == 0, número de tentativas atual é 0</text>
+<text x="116" y="389" fill="#999">40</text>
+<text x="152.0" y="389" fill="#111" font-weight="bold">lw x3, 11(x0)</text>
+<text x="413.0" y="389" fill="#444">seta register 0x3 (tentativa atual) como a tentativa 10 (0xB da memória)</text>
+<text x="116" y="414" fill="#999">41</text>
+<text x="152.0" y="414" fill="#111" font-weight="bold">beq x1, x3, 4</text>
+<text x="287.0" y="414" fill="#1e8449">→ 45</text>
+<text x="413.0" y="414" fill="#444">se 0x1 (senha) - 0x3 (tentativa atual) == 0, tentativa atual esta certa</text>
+<text x="116" y="439" fill="#999">42</text>
+<text x="152.0" y="439" fill="#111" font-weight="bold">sub x2, x2, x5</text>
+<text x="413.0" y="439" fill="#444">seta registrador 0x2 (tentativas feitas) como 0x2 - 0x5 (posição valendo 1)</text>
+<text x="152.0" y="476" fill="#777" font-style="italic">/* chega aqui caso tenham sido feitas todas as tentativas e nenhuma correta */</text>
+<text x="116" y="501" fill="#999">43</text>
+<text x="152.0" y="501" fill="#111" font-weight="bold">sw x0, 13(x0)</text>
+<text x="413.0" y="501" fill="#444">seta memoria 0xD (resultado) como 0x0 (register nulo) (resposta errada)</text>
+<text x="116" y="526" fill="#999">44</text>
+<text x="152.0" y="526" fill="#111" font-weight="bold">beq x0, x0, 3</text>
+<text x="287.0" y="526" fill="#555555">→ 47</text>
+<text x="413.0" y="526" fill="#444">salta para o final do programa</text>
+<text x="116" y="551" fill="#999">45</text>
+<text x="152.0" y="551" fill="#111" font-weight="bold">sw x5, 13(x0)</text>
+<text x="413.0" y="551" fill="#444">seta memoria 0xD (resultado) como 0x5 (register valendo 1) (resposta certa)</text>
+<text x="116" y="576" fill="#999">46</text>
+<text x="152.0" y="576" fill="#111" font-weight="bold">lw x4, 13(x0)</text>
+<text x="413.0" y="576" fill="#444">coloca no registrador 0x4 o resultado do jogo</text>
+<text x="116" y="601" fill="#999">47</text>
+<text x="152.0" y="601" fill="#111" font-weight="bold">beq x0, x0, 0</text>
+<text x="287.0" y="601" fill="#555555">→ 47  (laço)</text>
+<text x="413.0" y="601" fill="#444">termina o programa travando o PC</text>
+<line x1="80" y1="520.75" x2="80" y2="595.75" stroke="#555555" stroke-width="2"/>
+<line x1="58" y1="184.75" x2="58" y2="495.75" stroke="#c0392b" stroke-width="2"/>
+<line x1="36" y1="234.75" x2="36" y2="545.75" stroke="#1e8449" stroke-width="2"/>
+<line x1="80" y1="520.75" x2="100" y2="520.75" stroke="#fff" stroke-width="7"/>
+<line x1="80" y1="520.75" x2="100" y2="520.75" stroke="#555555" stroke-width="2"/>
+<line x1="80" y1="595.75" x2="110" y2="595.75" stroke="#fff" stroke-width="7"/>
+<line x1="80" y1="595.75" x2="110" y2="595.75" stroke="#555555" stroke-width="2" marker-end="url(#a-end)"/>
+<line x1="58" y1="184.75" x2="100" y2="184.75" stroke="#fff" stroke-width="7"/>
+<line x1="58" y1="184.75" x2="100" y2="184.75" stroke="#c0392b" stroke-width="2"/>
+<line x1="58" y1="358.75" x2="100" y2="358.75" stroke="#fff" stroke-width="7"/>
+<line x1="58" y1="358.75" x2="100" y2="358.75" stroke="#c0392b" stroke-width="2"/>
+<line x1="58" y1="495.75" x2="110" y2="495.75" stroke="#fff" stroke-width="7"/>
+<line x1="58" y1="495.75" x2="110" y2="495.75" stroke="#c0392b" stroke-width="2" marker-end="url(#a-fail)"/>
+<line x1="36" y1="234.75" x2="100" y2="234.75" stroke="#fff" stroke-width="7"/>
+<line x1="36" y1="234.75" x2="100" y2="234.75" stroke="#1e8449" stroke-width="2"/>
+<line x1="36" y1="408.75" x2="100" y2="408.75" stroke="#fff" stroke-width="7"/>
+<line x1="36" y1="408.75" x2="100" y2="408.75" stroke="#1e8449" stroke-width="2"/>
+<line x1="36" y1="545.75" x2="110" y2="545.75" stroke="#fff" stroke-width="7"/>
+<line x1="36" y1="545.75" x2="110" y2="545.75" stroke="#1e8449" stroke-width="2" marker-end="url(#a-ok)"/>
+<line x1="116" y1="636.0" x2="146" y2="636.0" stroke="#c0392b" stroke-width="2" marker-end="url(#a-fail)"/>
+<text x="158" y="641.0" fill="#444">acabaram as tentativas → resultado 0</text>
+<line x1="116" y1="661.0" x2="146" y2="661.0" stroke="#1e8449" stroke-width="2" marker-end="url(#a-ok)"/>
+<text x="158" y="666.0" fill="#444">acertou → resultado 1</text>
+<line x1="116" y1="686.0" x2="146" y2="686.0" stroke="#555555" stroke-width="2" marker-end="url(#a-end)"/>
+<text x="158" y="691.0" fill="#444">fim do programa</text>
+<text x="1106" y="691.0" text-anchor="end" fill="#999" font-size="12">gerado por tools/draw_program.py · destino do beq = PC + imm</text>
+</svg>

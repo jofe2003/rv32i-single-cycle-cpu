@@ -104,6 +104,7 @@ O VCD contém todos os sinais do módulo `riscv`. No GTKWave, o resultado do jog
 ```bash
 make test               # roda todas as testbenches
 make test-alu           # roda só uma
+make docs               # redesenha o diagrama do programa a partir do binário
 make clean              # apaga build/
 ```
 
@@ -153,7 +154,8 @@ Entradas, uma por linha: a senha (0–9), o número de tentativas *n* (0–9) e 
 │       └── clock_gen.v           # gerador de clock (período de 100 ns)
 ├── tb/                           # testbenches (<módulo>_tb.v)
 ├── tools/
-│   └── generate_datamem.c        # gera rtl/memory/data_memory.v
+│   ├── generate_datamem.c        # gera rtl/memory/data_memory.v
+│   └── draw_program.py           # desenha o programa (make docs)
 ├── extras/
 │   └── random_gen/               # gerador pseudoaleatório (fora do datapath)
 ├── docs/

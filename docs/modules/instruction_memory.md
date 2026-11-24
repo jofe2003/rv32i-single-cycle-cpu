@@ -128,8 +128,10 @@ Sendo assim, uma versão intuitiva, quase que o Assembly do Exercício programa,
  
  
 <p align="center">
- <img src="../img/instruction_memory_assembly.png" width="100%" height="80%" \>
+ <img src="../img/instruction_memory_program.svg" width="100%" \>
 </p>
+
+A figura acima é gerada a partir do binário em `rtl/memory/instruction_memory.v` por `tools/draw_program.py` (`make docs`); as setas mostram o destino real de cada `beq`.
 
 E aqui está o Assembly do EP 0 para o RISC-V:
 

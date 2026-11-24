@@ -4,6 +4,7 @@
 #   make wave         abre as formas de onda no GTKWave
 #   make test         roda todas as testbenches de módulo
 #   make test-alu     roda uma testbench específica (ver TESTS abaixo)
+#   make docs         regenera docs/img/instruction_memory_program.svg
 #   make clean        apaga build/
 
 IVERILOG ?= iverilog
@@ -34,7 +35,7 @@ random_gen_SRC         := extras/random_gen/random_gen.v extras/random_gen/rando
 
 TESTS := alu alu_control control_unit data_memory imm_gen instruction_memory pc register_file mux2 random_gen
 
-.PHONY: all sim wave test $(addprefix test-,$(TESTS)) clean
+.PHONY: all sim wave test docs $(addprefix test-,$(TESTS)) clean
 
 all: sim
 
@@ -65,6 +66,9 @@ endef
 $(foreach t,$(TESTS),$(eval $(call TEST_RULE,$(t))))
 
 test: $(addprefix test-,$(TESTS))
+
+docs:
+	python3 tools/draw_program.py
 
 clean:
 	rm -rf $(BUILD)
