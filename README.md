@@ -172,6 +172,7 @@ Inputs, one per line: the secret number (0–9), the number of guesses *n* (0–
 ├── docs/
 │   ├── modules/                  # per-module documentation (Portuguese)
 │   └── img/                      # diagrams, synthesized circuits and screenshots
+├── LICENSE
 ├── Makefile
 ├── README.md                     # this file
 └── README.pt-BR.md               # Portuguese version
@@ -196,6 +197,10 @@ Inputs, one per line: the secret number (0–9), the number of guesses *n* (0–
 ## Hardware
 
 The design was synthesized for the **[Intel Cyclone V](https://www.intel.com/content/www/us/en/products/details/fpga/cyclone/v.html)** FPGA. In a 2022 survey of the Brazilian market, Cyclone V development kits started at R$ 1,500; standalone boards were only found for the previous generation, the Cyclone IV, at R$ 200–300. Another option aimed at learning RISC-V is the [Perf-V](https://perfv.org/) board.
+
+## License
+
+Released under the [MIT License](LICENSE).
 
 ## References
 

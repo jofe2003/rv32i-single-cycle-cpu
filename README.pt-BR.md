@@ -172,6 +172,7 @@ Entradas, uma por linha: a senha (0–9), o número de tentativas *n* (0–10) e
 ├── docs/
 │   ├── modules/                  # documentação de cada módulo
 │   └── img/                      # diagramas, circuitos sintetizados e capturas
+├── LICENSE
 ├── Makefile
 ├── README.md                     # versão em inglês
 └── README.pt-BR.md               # esta versão
@@ -196,6 +197,10 @@ Entradas, uma por linha: a senha (0–9), o número de tentativas *n* (0–10) e
 ## Hardware
 
 A síntese foi feita para a FPGA **[Intel Cyclone V](https://www.intel.com/content/www/us/en/products/details/fpga/cyclone/v.html)**. No levantamento de custos feito em 2022, os kits de desenvolvimento com Cyclone V custavam a partir de R$ 1.500. Só achamos preço da placa avulsa para a geração anterior, a Cyclone IV, entre R$ 200 e R$ 300. Outra alternativa voltada ao ensino de RISC-V é a placa [Perf-V](https://perfv.org/).
+
+## Licença
+
+Distribuído sob a [licença MIT](LICENSE).
 
 ## Referências
 
