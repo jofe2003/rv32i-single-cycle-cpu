@@ -4,7 +4,7 @@ A ALU Control é o circuito responsável pelo controle das operações realizada
 
 Abaixo está a tabela verdade da ALU Control
 
-![truthtable](tabela_verdade_aluctrl.jpeg)
+![truthtable](../img/alu_control_truth_table.jpeg)
 
 0010 -> soma
 
@@ -17,4 +17,4 @@ Abaixo está a tabela verdade da ALU Control
 
 O circuito sintetizado da ALU Control está disponível abaixo:
 
-![ALUControl](ALUControl.png)
+![ALUControl](../img/alu_control.png)

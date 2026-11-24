@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./GrupoCessar.png" width="100%"/>
+  <img src="docs/img/grupo_cessar.png" width="100%"/>
 </p>
 
 # Processador RISC-V monociclo em Verilog
@@ -15,19 +15,19 @@ Implementação de um processador **RISC-V monociclo (subconjunto RV32I)** em Ve
 
 O processador roda um programa já carregado na Memória de Instruções: o **jogo de adivinhação** ("Numle") do EP0 da disciplina MAC2166 – Introdução à Computação. A senha e as tentativas do jogador ficam na Memória de Dados, e o resultado (1 = acertou, 0 = errou) é escrito de volta nela.
 
-Cada bloco do datapath (ALU, controle, registradores, memórias, gerador de imediatos, mux, somadores) é um módulo separado, com testbench própria, comentários no código e um README que explica o seu funcionamento.
+Cada bloco do datapath (ALU, controle, registradores, memórias, gerador de imediatos, mux, somadores) é um módulo separado, com testbench própria, comentários no código e documentação em [`docs/modules/`](docs/modules/).
 
-O código C original do jogo, a tradução instrução por instrução para RISC-V e as formas de onda da simulação estão em [`InstructionMemory/README.md`](InstructionMemory/README.md).
+O código C original do jogo, a tradução instrução por instrução para RISC-V e as formas de onda da simulação estão em [`docs/modules/instruction_memory.md`](docs/modules/instruction_memory.md).
 
-![Diagrama do circuito](Circuito.jpg)
+![Diagrama do datapath](docs/img/datapath.jpg)
 
 Circuito sintetizado:
 
-![Circuito sintetizado](sintetizado.jpeg)
+![Circuito sintetizado](docs/img/synthesized.jpeg)
 
 Também foi feita uma implementação para FPGA (Intel Cyclone V):
 
-![Pin planner da FPGA](riscv-fpga-pinplanner.png)
+![Pin planner da FPGA](docs/img/fpga_pin_planner.png)
 
 ### Instruções suportadas
 
@@ -41,7 +41,7 @@ Também foi feita uma implementação para FPGA (Intel Cyclone V):
 | `sw`  | S | `Mem[rs1 + imm] = rs2` |
 | `beq` | B | se `rs1 == rs2` (subtração dá zero), `PC = PC + imm` |
 
-![Formato das instruções](instructionset.png)
+![Formato das instruções](docs/img/instruction_formats.png)
 
 | Campo | Significado |
 |---|---|
@@ -57,7 +57,8 @@ Também foi feita uma implementação para FPGA (Intel Cyclone V):
 
 - [Icarus Verilog](https://steveicarus.github.io/iverilog/) (`iverilog` e `vvp`) — compilação e simulação
 - [GTKWave](https://gtkwave.sourceforge.net/) — visualização das formas de onda
-- Opcional: [Questa – Intel FPGA Edition](https://www.intel.com/content/www/us/en/software/programmable/quartus-prime/questa-edition.html) — foi usado nas testbenches individuais
+- `make`
+- Opcional: [Questa – Intel FPGA Edition](https://www.intel.com/content/www/us/en/software/programmable/quartus-prime/questa-edition.html) — simulador alternativo
 - Opcional: Intel Quartus Prime — síntese para FPGA Cyclone V
 - Opcional: `gcc` — para compilar o gerador da Memória de Dados
 
@@ -73,7 +74,7 @@ cd -- -rv32i-single-cycle-cpu
 Ubuntu/Debian:
 
 ```bash
-sudo apt install iverilog gtkwave
+sudo apt install iverilog gtkwave make
 ```
 
 macOS (Homebrew):
@@ -85,87 +86,100 @@ brew install --cask gtkwave
 
 ## Uso
 
+Todos os comandos são executados na raiz do repositório. Os arquivos gerados vão para `build/`.
+
 ### Simular o processador completo
 
-Na **raiz do repositório** (os `` `include `` usam caminhos relativos a ela):
-
 ```bash
-iverilog -Wall -I ./ALU -I ./ALU/operations -I ./adders -o riscv.vvp risc-v.v risc-v_TB.v
-vvp riscv.vvp
-gtkwave my_dumpfile.vcd
+make sim     # compila e simula; gera build/my_dumpfile.vcd
+make wave    # abre as formas de onda no GTKWave
 ```
 
-A simulação gera `my_dumpfile.vcd` com todos os sinais do módulo `riscv`. No GTKWave, o resultado do jogo pode ser visto na Memória de Dados:
+O VCD contém todos os sinais do módulo `riscv`. No GTKWave, o resultado do jogo pode ser visto na Memória de Dados:
 
-![GTKWave](gtkwave.png)
+![GTKWave](docs/img/gtkwave.png)
 
-Se der erro de arquivo não encontrado nos `` `include ``, confira se o comando foi executado na raiz e se as flags `-I` estão presentes ([discussão no Stack Overflow](https://stackoverflow.com/questions/47449489/how-to-include-files-in-icarus-verilog)).
-
-### Testar um módulo isolado
-
-Cada pasta tem o módulo e sua testbench. Com Icarus Verilog, por exemplo:
+### Testar os módulos
 
 ```bash
-cd mux
-iverilog -o tb.vvp mux.v mux_TB.v && vvp tb.vvp
+make test               # roda todas as testbenches
+make test-alu           # roda só uma
+make clean              # apaga build/
 ```
 
-Para a ALU, que inclui as operações em `operations/`:
+Testbenches disponíveis: `alu`, `alu_control`, `control_unit`, `data_memory`, `imm_gen`, `instruction_memory`, `pc`, `register_file`, `mux2`, `random_gen`.
+
+> As testbenches de `alu_control`, `data_memory`, `instruction_memory` e `register_file` foram escritas para versões anteriores dos módulos (por exemplo, outro conteúdo de memória) e hoje reportam erros, embora o processador completo funcione.
+
+Para usar o Questa, compile os mesmos arquivos que o `Makefile` lista para cada testbench:
 
 ```bash
-cd ALU
-iverilog -I operations -o tb.vvp ALU.v ALU_tb.v && vvp tb.vvp
+vlog rtl/common/mux2.v tb/mux2_tb.v
+vsim -c work.testbench -do "run -all; quit"
 ```
-
-Com Questa:
-
-```bash
-vlog modulo.v
-vlog modulo_tb.v
-vsim -c work.testbench
-# dentro do simulador:
-run 10000ns
-quit
-```
-
-O tempo do `run` depende de cada testbench: veja os atrasos (`#...`) no arquivo para escolher um valor suficiente.
 
 ### Mudar as entradas do jogo
 
-O programa `DataMemory/generate_datamem.c` gera um novo `DataMemory.v` com a senha e as tentativas que você escolher:
+O programa `tools/generate_datamem.c` gera uma nova Memória de Dados com a senha e as tentativas que você escolher:
 
 ```bash
-cd DataMemory
-gcc generate_datamem.c -o generator
-printf "4\n3\n1\n2\n3\n" | ./generator > DataMemory.v
+gcc tools/generate_datamem.c -o tools/generator
+printf "4\n3\n1\n2\n3\n" | ./tools/generator > rtl/memory/data_memory.v
+make sim
 ```
 
-Entradas, uma por linha: a senha (0–9), o número de tentativas *n* (0–9) e as *n* tentativas (0–9 cada). Atenção: isso **sobrescreve** o `DataMemory.v` atual.
+Entradas, uma por linha: a senha (0–9), o número de tentativas *n* (0–9) e as *n* tentativas (0–9 cada). Atenção: isso **sobrescreve** `rtl/memory/data_memory.v`; use `git checkout rtl/memory/data_memory.v` para voltar ao original.
 
 ## Estrutura de pastas
 
 ```
 .
-├── risc-v.v                 # módulo topo: liga todos os blocos do datapath
-├── risc-v_TB.v              # testbench do processador completo (reset + 100 µs)
-├── ALU/                     # ALU (add, sub, and, or) + testbench
-│   └── operations/          # somador/subtrator carry/borrow look-ahead, and, or
-├── ALU_Control/             # controle da ALU (decodifica ALUOp + funct)
-├── Control-Monocycle/       # unidade de controle principal (decodifica o opcode)
-├── ClockGenerator/          # gerador de clock (período de 100 ns)
-├── Registers/               # banco de 32 registradores e Program Counter
-├── ImmediateGenerator/      # extrai o imediato dos formatos I, S e B
-├── InstructionMemory/       # programa do jogo em binário + capturas da simulação
-├── DataMemory/              # memória de dados e o gerador em C
-├── mux/                     # multiplexador 2:1 de 32 bits
-├── adders/                  # somador de 32 bits (PC + 1, PC + imm)
-├── randomGenerator/         # gerador pseudoaleatório (não usado no topo; mantido por completude)
-├── Circuito.jpg             # diagrama do datapath
-├── sintetizado.jpeg         # circuito sintetizado
-├── riscv-fpga-pinplanner.png# mapeamento de pinos na FPGA
-├── instructionset.png       # formatos de instrução
-└── gtkwave.png              # exemplo de simulação
+├── rtl/                          # código sintetizável
+│   ├── riscv_top.v               # módulo topo: liga todos os blocos do datapath
+│   ├── core/
+│   │   ├── control_unit.v        # unidade de controle (decodifica o opcode)
+│   │   ├── alu_control.v         # controle da ALU (ALUOp + funct → operação)
+│   │   ├── imm_gen.v             # extrai o imediato dos formatos I, S e B
+│   │   ├── register_file.v       # banco de 32 registradores
+│   │   └── pc.v                  # Program Counter
+│   ├── alu/
+│   │   ├── alu.v                 # ALU: add, sub, and, or
+│   │   └── ops/                  # somador/subtrator look-ahead, and, or
+│   ├── memory/
+│   │   ├── instruction_memory.v  # programa do jogo em binário
+│   │   └── data_memory.v         # senha, tentativas e resultado
+│   └── common/
+│       ├── adder32.v             # somador de 32 bits (PC + 1, PC + imm)
+│       ├── lookahead_1b.v        # célula de 1 bit do somador
+│       ├── mux2.v                # multiplexador 2:1 de 32 bits
+│       └── clock_gen.v           # gerador de clock (período de 100 ns)
+├── tb/                           # testbenches (<módulo>_tb.v)
+├── tools/
+│   └── generate_datamem.c        # gera rtl/memory/data_memory.v
+├── extras/
+│   └── random_gen/               # gerador pseudoaleatório (fora do datapath)
+├── docs/
+│   ├── modules/                  # documentação de cada módulo
+│   └── img/                      # diagramas, circuitos sintetizados e capturas
+├── Makefile
+└── README.md
 ```
+
+### Documentação dos módulos
+
+| Módulo | Documentação |
+|---|---|
+| ALU | [alu.md](docs/modules/alu.md) |
+| Controle da ALU | [alu_control.md](docs/modules/alu_control.md) |
+| Unidade de Controle | [control_unit.md](docs/modules/control_unit.md) |
+| Gerador de Imediatos | [imm_gen.md](docs/modules/imm_gen.md) |
+| Registradores e PC | [registers.md](docs/modules/registers.md) |
+| Memória de Instruções | [instruction_memory.md](docs/modules/instruction_memory.md) |
+| Memória de Dados | [data_memory.md](docs/modules/data_memory.md) |
+| Multiplexador | [mux2.md](docs/modules/mux2.md) |
+| Somador | [adder32.md](docs/modules/adder32.md) |
+| Gerador de Clock | [clock_gen.md](docs/modules/clock_gen.md) |
+| Gerador aleatório (extra) | [random_gen.md](docs/modules/random_gen.md) |
 
 ## Hardware
 

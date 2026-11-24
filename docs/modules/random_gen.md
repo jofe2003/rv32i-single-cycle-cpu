@@ -4,4 +4,4 @@ Esta unidade foi feita pensando em implementar a geração de senhas pseudo-alea
 
 Por outro lado, preferimos deixar a solução 100% RISC-V, sem adaptações externas. Por completude, deixamos o circuito sintetizado e o código aqui.
 
-![random](random.png) 
+![random](../img/random_gen.png) 

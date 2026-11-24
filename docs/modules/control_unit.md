@@ -19,8 +19,8 @@ O sinal de entrada da Unidade de Controle contém sete bits (Inputs), esses valo
 
 A tabela a seguir deixa explícito cada um dos sinais que podem ser recebidos e enviados pela Unidade de Controle:
 
-![ControlTabela](ControlTabela.jpg)
+![ControlTabela](../img/control_unit_table.jpg)
 
 O circuito sintetizado pode ser vizualizado abaixo:
 
-![ControlCircuito](ControlCircuito.jpg)
+![ControlCircuito](../img/control_unit_circuit.jpg)

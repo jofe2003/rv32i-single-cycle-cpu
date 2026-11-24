@@ -1,8 +1,3 @@
-`include "./operations/and.v"
-`include "./operations/sub.v"
-`include "./operations/sum.v"
-`include "./operations/or.v"
-
 module ALU (
     input [31:0] A,
     input [31:0] B,

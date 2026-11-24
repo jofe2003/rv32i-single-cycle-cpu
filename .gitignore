@@ -18,4 +18,7 @@ output_files/
 simulation/
 
 # Gerador da Memória de Dados
-DataMemory/generator
+tools/generator
+
+# Saídas do Makefile
+build/

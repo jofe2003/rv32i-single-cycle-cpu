@@ -1,15 +1,3 @@
-`include "./ClockGenerator/clock_gen.v"
-`include "./InstructionMemory/InstructionMemory.v"
-`include "./Registers/PC.v"
-`include "./Control-Monocycle/Control.v"
-`include "./Registers/Registers.v"
-`include "./ImmediateGenerator/immediateG.v"
-`include "./ALU_Control/ALU_Control_structural.v"
-`include "./ALU/ALU.v"
-`include "./DataMemory/DataMemory.v"
-`include "./mux/mux.v"
-`include "./adders/sum.v"
-
 /* Este modulo e o risc-v em si, como mostrado no diagrama do readme inicial */
 
 module riscv (

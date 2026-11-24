@@ -3,8 +3,8 @@ A Unidade Lógica e Aritmética é o componente responsável por realizar as ope
 
 A ALU executa operações diversas a depender do código de operação que recebe como entrada.
 
-``⚠️ Para mais informações sobre os respectivos códigos de operação, observe o README da Unidade de Controle e do Controle da ALU ⚠️ ``
+> ⚠️ Para mais informações sobre os respectivos códigos de operação, veja a documentação da [Unidade de Controle](control_unit.md) e do [Controle da ALU](alu_control.md)
 
 Abaixo é possível visualizar o circuito sintetizado da ALU:
 
-![ALU](ALU.jpg)
+![ALU](../img/alu.jpg)

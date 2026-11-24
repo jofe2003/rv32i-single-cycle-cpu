@@ -1,5 +1,3 @@
-`include "lookAhead1bALU.v"
-
 module sumALU (
     input [31:0] A,
     input [31:0] B,

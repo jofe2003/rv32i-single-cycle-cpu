@@ -53,5 +53,6 @@ module testbench () ;
         Check(32'd1, 32'd1);
 
         $display (" Test ended , %2d errors ", errors );
+        $finish;
         end
 endmodule

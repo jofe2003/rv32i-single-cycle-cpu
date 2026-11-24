@@ -53,6 +53,7 @@ module testbench ();
 
 
         $display("Test finished. Erros: %d", errors);
+        $finish;
     end
 
     

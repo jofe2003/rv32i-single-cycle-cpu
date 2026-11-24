@@ -10,4 +10,4 @@ O RISC-V de 32 bits possui 32 registradores de 32 bits.
 
 Abaixo, uma representação deles:
 
-![registers](registers.png)
+![registers](../img/register_file.png)
