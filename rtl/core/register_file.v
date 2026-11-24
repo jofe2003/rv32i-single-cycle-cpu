@@ -77,7 +77,7 @@ module Registers (
         register31 = 32'd0;
     end
         /* leitura assincrona */
-    always @(readRegister1, readRegister2) begin
+    always @(*) begin
         case (readRegister1)
             5'b0 : readData1 = register0;
             5'h1 : readData1 = register1;
@@ -155,7 +155,7 @@ module Registers (
     always @(posedge clk) begin
         if (regWrite == 1'b1) begin
            case (writeRegister)
-            5'h0 : register0  = writeData;
+            5'h0 : ; /* x0 e sempre zero no RISC-V: escrita ignorada */
             5'h1 : register1  = writeData;
             5'h2 : register2  = writeData;
             5'h3 : register3  = writeData;

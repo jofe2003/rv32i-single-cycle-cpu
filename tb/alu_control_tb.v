@@ -19,6 +19,7 @@ module testbench () ;
 
         initial begin
         errors = 0;
+        /* ALUOp = 00 (lw/sw): a ALU soma para calcular o endereco */
         ALUOp1 = 1'b0;
         ALUOp0 = 1'b0;
 
@@ -30,13 +31,14 @@ module testbench () ;
             Check(4'b0010);
         end
 
+        /* ALUOp = 01 (beq): a ALU subtrai para comparar rs1 e rs2 */
         ALUOp1 = 1'b0;
         ALUOp0 = 1'b1;
         for (i = 0; i <= 15; i = i + 1) begin
             #10;
             funct = i;
             #10;
-            Check(4'b0010);
+            Check(4'b0110);
         end
 
         ALUOp1 = 1'b1;
@@ -60,5 +62,6 @@ module testbench () ;
             endcase
         end
         $display (" Test ended , %2d errors ", errors );
+        $finish;
     end
 endmodule

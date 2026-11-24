@@ -46,7 +46,7 @@ Também foi feita uma implementação para FPGA (Intel Cyclone V):
 | Campo | Significado |
 |---|---|
 | `rs1`, `rs2` | registradores de origem |
-| `rd` | registrador de destino |
+| `rd` | registrador de destino (`x0` vale sempre zero) |
 | `imm` | valor imediato embutido na instrução |
 | `opcode` | identifica o tipo de instrução (R, I, S, B…) |
 | `funct3`, `funct7` | diferenciam instruções com o mesmo opcode (ex.: `add` × `sub`) |
@@ -108,8 +108,6 @@ make clean              # apaga build/
 ```
 
 Testbenches disponíveis: `alu`, `alu_control`, `control_unit`, `data_memory`, `imm_gen`, `instruction_memory`, `pc`, `register_file`, `mux2`, `random_gen`.
-
-> As testbenches de `alu_control`, `data_memory`, `instruction_memory` e `register_file` foram escritas para versões anteriores dos módulos (por exemplo, outro conteúdo de memória) e hoje reportam erros, embora o processador completo funcione.
 
 Para usar o Questa, compile os mesmos arquivos que o `Makefile` lista para cada testbench:
 

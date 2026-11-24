@@ -12,6 +12,6 @@ int main() {
         scanf("%d", &tentativaAtual);
         printf("Memory[%d] = 32'd%d;\n", i+2, tentativaAtual);
     }
-    printf("Memory[12] = 32'd1;\nend\n//  assincrono\nalways @(endereco) begin\n  endereco_atual = endereco[4:0];\n  if (mem_read == 1) begin\n  read_data = Memory[endereco_atual];\n  end\nend\n// sincrono\nalways @(posedge clk) begin\n  endereco_atual = endereco[4:0];\n  if (mem_write == 1) begin\nMemory[endereco_atual] = write_data;\n  end\nend\n endmodule\n");
+    printf("Memory[12] = 32'd1;\nend\n//  assincrono\nalways @(*) begin\n  endereco_atual = endereco[4:0];\n  if (mem_read == 1) begin\n  read_data = Memory[endereco_atual];\n  end\nend\n// sincrono\nalways @(posedge clk) begin\n  endereco_atual = endereco[4:0];\n  if (mem_write == 1) begin\nMemory[endereco_atual] = write_data;\n  end\nend\n endmodule\n");
     return 0;
 }

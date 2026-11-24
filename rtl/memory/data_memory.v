@@ -32,7 +32,7 @@ module data_memory(input clk,
    end
    
    //  assincrono
-   always @(endereco) begin
+   always @(*) begin
         endereco_atual = endereco[4:0];
 
         if (mem_read == 1) begin
