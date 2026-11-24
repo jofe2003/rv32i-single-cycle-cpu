@@ -54,43 +54,43 @@ Aqui embaixo está a versão em código de máquina para o RISC-V de 32 bits
 00000000110000000010001010000011
 00000000000000000010000010000011
 00000000000100000010000100000011
-00000100000000010000100101100011
+00000100000000010000100001100011
 00000000001000000010000110000011
-00000110001100001000000001100011
+00000100001100001000100001100011
 01000000010100010000000100110011
-00000100000000010000001101100011
+00000100000000010000010001100011
 00000000001100000010000110000011
 00000100001100001000010001100011
 01000000010100010000000100110011
-00000010000000010000111101100011
+00000100000000010000000001100011
 00000000010000000010000110000011
 00000100001100001000000001100011
 01000000010100010000000100110011
-00000010000000010000101101100011
+00000010000000010000110001100011
 00000000010100000010000110000011
 00000010001100001000110001100011
 01000000010100010000000100110011
-00000010000000010000011101100011
+00000010000000010000100001100011
 00000000011000000010000110000011
 00000010001100001000100001100011
 01000000010100010000000100110011
-00000010000000010000001101100011
+00000010000000010000010001100011
 00000000011100000010000110000011
 00000010001100001000010001100011
 01000000010100010000000100110011
-00000000000000010000111101100011
+00000010000000010000000001100011
 00000000100000000010000110000011
 00000010001100001000000001100011
 01000000010100010000000100110011
-00000000000000010000101101100011
+00000000000000010000110001100011
 00000000100100000010000110000011
 00000000001100001000110001100011
 01000000010100010000000100110011
-00000000000000010000011101100011
+00000000000000010000100001100011
 00000000101000000010000110000011
 00000000001100001000100001100011
 01000000010100010000000100110011
-00000000000000010000001101100011
+00000000000000010000010001100011
 00000000101100000010000110000011
 00000000001100001000010001100011
 01000000010100010000000100110011
@@ -133,6 +133,8 @@ Sendo assim, uma versão intuitiva, quase que o Assembly do Exercício programa,
 
 E aqui está o Assembly do EP 0 para o RISC-V:
 
+Como a memória é endereçada por palavra, o deslocamento do `beq` é contado em instruções: o destino é `PC + deslocamento`.
+
 ```
 /* seta posição 0x5 (registrador) como 0xC (memória) */
 lw x5, 12(x0)
@@ -145,7 +147,7 @@ lw x2, 1(x0)
     Bloco para tentativa 1
 */
 /* se 0x2 (tentativas feitas) - 0x0 (0) == 0, número de tentativas atual é 0 */
-beq x2, x0, 39
+beq x2, x0, 40
 /* seta register 0x3 (tentativa atual) como a tentativa 1 (0x2 da memória) */
 lw x3, 2(x0)
 /* se 0x1 (senha) - 0x3 (tentativa atual) == 0, tentativa atual esta certa */
@@ -157,7 +159,7 @@ sub x2, x2, x5
     Bloco para tentativa 2
 */
 /* se 0x2 (tentativas feitas) - 0x0 (0) == 0, número de tentativas atual é 0 */
-beq x2, x0, 35
+beq x2, x0, 36
 /* seta register 0x3 (tentativa atual) como a tentativa 2 (0x3 da memória) */
 lw x3, 3(x0)
 /* se 0x1 (senha) - 0x3 (tentativa atual) == 0, tentativa atual esta certa */
@@ -169,9 +171,9 @@ sub x2, x2, x5
     Bloco para tentativa 3
 */
 /* se 0x2 (tentativas feitas) - 0x0 (0) == 0, número de tentativas atual é 0 */
-beq x2, x0, 31
+beq x2, x0, 32
 /* seta register 0x3 (tentativa atual) como a tentativa 3 (0x4 da memória) */
-lw x3, 4(x3)
+lw x3, 4(x0)
 /* se 0x1 (senha) - 0x3 (tentativa atual) == 0, tentativa atual esta certa */
 beq x1, x3, 32
 /* seta registrador 0x2 (tentativas feitas) como 0x2 - 0x5 (posição valendo 1) */
@@ -181,7 +183,7 @@ sub x2, x2, x5
     Bloco para tentativa 4
 */
 /* se 0x2 (tentativas feitas) - 0x0 (0) == 0, número de tentativas atual é 0 */
-beq x2, x0, 27
+beq x2, x0, 28
 /* seta register 0x3 (tentativa atual) como a tentativa 4 (0x5 da memória) */
 lw x3, 5(x0)
 /* se 0x1 (senha) - 0x3 (tentativa atual) == 0, tentativa atual esta certa */
@@ -193,7 +195,7 @@ sub x2, x2, x5
     Bloco para tentativa 5
 */
 /* se 0x2 (tentativas feitas) - 0x0 (0) == 0, número de tentativas atual é 0 */
-beq x2, x0, 23
+beq x2, x0, 24
 /* seta register 0x3 (tentativa atual) como a tentativa 5 (0x6 da memória) */
 lw x3, 6(x0)
 /* se 0x1 (senha) - 0x3 (tentativa atual) == 0, tentativa atual esta certa */
@@ -205,7 +207,7 @@ sub x2, x2, x5
     Bloco para tentativa 6
 */
 /* se 0x2 (tentativas feitas) - 0x0 (0) == 0, número de tentativas atual é 0 */
-beq x2, x0, 19
+beq x2, x0, 20
 /* seta register 0x3 (tentativa atual) como a tentativa 6 (0x7 da memória) */
 lw x3, 7(x0)
 /* se 0x1 (senha) - 0x3 (tentativa atual) == 0, tentativa atual esta certa */
@@ -217,7 +219,7 @@ sub x2, x2, x5
     Bloco para tentativa 7
 */
 /* se 0x2 (tentativas feitas) - 0x0 (0) == 0, número de tentativas atual é 0 */
-beq x2, x0, 15
+beq x2, x0, 16
 /* seta register 0x3 (tentativa atual) como a tentativa 7 (0x8 da memória) */
 lw x3, 8(x0)
 /* se 0x1 (senha) - 0x3 (tentativa atual) == 0, tentativa atual esta certa */
@@ -229,7 +231,7 @@ sub x2, x2, x5
     Bloco para tentativa 8
 */
 /* se 0x2 (tentativas feitas) - 0x0 (0) == 0, número de tentativas atual é 0 */
-beq x2, x0, 11
+beq x2, x0, 12
 /* seta register 0x3 (tentativa atual) como a tentativa 8 (0x9 da memória) */
 lw x3, 9(x0)
 /* se 0x1 (senha) - 0x3 (tentativa atual) == 0, tentativa atual esta certa */
@@ -241,7 +243,7 @@ sub x2, x2, x5
     Bloco para tentativa 9
 */
 /* se 0x2 (tentativas feitas) - 0x0 (0) == 0, número de tentativas atual é 0 */
-beq x2, x0, 7
+beq x2, x0, 8
 /* seta register 0x3 (tentativa atual) como a tentativa 9 (0xA da memória) */
 lw x3, 10(x0)
 /* se 0x1 (senha) - 0x3 (tentativa atual) == 0, tentativa atual esta certa */
@@ -253,7 +255,7 @@ sub x2, x2, x5
     Bloco para tentativa 10
 */
 /* se 0x2 (tentativas feitas) - 0x0 (0) == 0, número de tentativas atual é 0 */
-beq x2, x0, 3
+beq x2, x0, 4
 /* seta register 0x3 (tentativa atual) como a tentativa 10 (0xB da memória) */
 lw x3, 11(x0)
 /* se 0x1 (senha) - 0x3 (tentativa atual) == 0, tentativa atual esta certa */
@@ -265,7 +267,7 @@ sub x2, x2, x5
 /* seta memoria 0xD (resultado) como 0x0 (register nulo) (resposta errada) */
 sw x0, 13(x0)
 /* salta para o final do programa */
-beq x0, x0, 2
+beq x0, x0, 3
 
 /* seta memoria 0xD (resultado) como 0x5 (register valendo 1) (resposta certa) */
 sw x5, 13(x0)
