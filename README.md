@@ -1,202 +1,180 @@
-
 <p align="center">
-  <img src="./GrupoCessar.png" width="100%" height="40%"/>
+  <img src="./GrupoCessar.png" width="100%"/>
 </p>
 
-<p align="center">
-  <a href="https://github.com/henriquegreg/Grupo-3---Grupo-Cessar---PCS3115q">
-    <img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white" />
-  </a>
-  <a href="http://iverilog.icarus.com/">
-    <img src="http://iverilog.icarus.com/_/rsrc/1302225644705/config/customLogo.gif?revision=5" height="28" width="101" />
-  </a>
-  <a href="https://gtkwave.sourceforge.net/">
-    <img src="https://i.ibb.co/s1ztX55/gtk.png" height="28" width="101" />
-  </a>
-</p>
+# Processador RISC-V monociclo em Verilog
 
-<p align="center">
-  <a href="https://github.com/C-Tadaki-S">
-    <img src="https://avatars.githubusercontent.com/u/103610912?s=70&v=4" height="50" width="50" />
-  </a>
-  <a href="https://github.com/henriquegreg">
-    <img src="https://avatars.githubusercontent.com/u/103610752?s=70&v=4" height="50" width="50" />
-  </a>
-  <a href="https://github.com/jofe2003">
-    <img src="https://avatars.githubusercontent.com/u/112812381?s=70&v=4" height="50" width="50" />
-  </a>
-  <a href="https://github.com/bertanbee">
-    <img src="https://avatars.githubusercontent.com/u/52827517?s=70&v=4" height="50" width="50" />
-  </a>
-</p>
+## Descrição
 
+Implementação de um processador **RISC-V monociclo (subconjunto RV32I)** em Verilog, feita como projeto da disciplina **PCS3115 – Sistemas Digitais I** da Escola Politécnica da USP (2022) pelo Grupo 3 (Grupo Cessar):
 
+- [Celso Tadaki Sinoka](https://github.com/C-Tadaki-S)
+- [Henrique Gregory Gimenez](https://github.com/henriquegreg)
+- [João Felipe de Souza Melo](https://github.com/jofe2003)
+- [Lucas Suzin Bertan](https://github.com/bertanbee)
 
-# Olá, bem-vindo ao repositório do grupo 3 (Grupo Cessar)!
+O processador roda um programa já carregado na Memória de Instruções: o **jogo de adivinhação** ("Numle") do EP0 da disciplina MAC2166 – Introdução à Computação. A senha e as tentativas do jogador ficam na Memória de Dados, e o resultado (1 = acertou, 0 = errou) é escrito de volta nela.
 
-Oi, tudo bem? Nós somos alunos do 1° ano de Engenharia de Computação da Escola Politécnica da USP no ano de 2022. 
-Os integrantes do grupo são: Celso Tadaki Sinoka, Henrique Gregory Gimenez, João Felipe de Souza Melo e Lucas Suzin Bertan. Nós compomos o grupo 3 da disciplina PCS-3115 (Sistemas Digitais I).
-Neste repositório você encontrará uma implementação de um processador com a arquitetura RISC-V na linguagem de descrição de hardware Verilog. O objetivo final deste projeto consiste em aplicar esse processador para rodar um jogo de advinhação, que foi desenvolvido como exercício em uma disciplina anterior (MAC2166 - Introdução à Computação).
-Os resultados da simulação desse programa, assim como sua implementação no RISC-V, estão na pasta da Instruction Memory. Vai lá conferir :)
+Cada bloco do datapath (ALU, controle, registradores, memórias, gerador de imediatos, mux, somadores) é um módulo separado, com testbench própria, comentários no código e um README que explica o seu funcionamento.
 
-Abaixo você poderá ver um diagrama detalhado que descreve o funcionamento do circuito:
+O código C original do jogo, a tradução instrução por instrução para RISC-V e as formas de onda da simulação estão em [`InstructionMemory/README.md`](InstructionMemory/README.md).
 
-![Circuito](Circuito.jpg)
+![Diagrama do circuito](Circuito.jpg)
 
-Aqui, o circuito sintetizado:
+Circuito sintetizado:
 
-![Sintetizado](sintetizado.jpeg)
+![Circuito sintetizado](sintetizado.jpeg)
 
-Também foi feita uma implementação para FPGA, representada abaixo:
+Também foi feita uma implementação para FPGA (Intel Cyclone V):
 
-![fpga](riscv-fpga-pinplanner.png)
+![Pin planner da FPGA](riscv-fpga-pinplanner.png)
 
-## Instruções
-As instruções que o processador feito pelo grupo utiliza são:
-|  Instrução  | Tipo |  Descrição |
-|-------------|---|---|
-| add  | R  | Soma dois registradores (rs1 e rs2) e armazena o resultado no registrador rd  |
-| sub   | R | Subtrai dois registradores (rs1 e rs2) e armazena o resultado no registrador rd  |
-| and | R  | Faz a operação lógica and bitwise (bit a bit) entre dois registradores (rs1 e rs2) e armazena o resultado no registrador rd  |
-| or | R  | Faz a operação lógica or bitwise (bit a bit) entre dois registradores (rs1 e rs2) e armazena o resultado no registrador rd   |
-| lw (load word) | S  | carrega uma palavra da Memória de Dados da posição rs1 + offset e armazena o valor lido no registrador rd |
-| sw (store word) |  I | armazena uma palavra do registrador rs2 na posição da Memória de Dados rs1 + offset |
-| beq (branch if equal) |  B | Compara o conteúdo dos registradores rs2 e rs1. Caso eles sejam iguais (a subtração entre os dois tem resultado 0), o Program Counter, que marca a linha atual na Instruction Memory, é setado para PC atual + offset  |
+### Instruções suportadas
 
-Abaixo estão a estrutura de cada tipo de instrução:
+| Instrução | Tipo | Descrição |
+|---|---|---|
+| `add` | R | `rd = rs1 + rs2` |
+| `sub` | R | `rd = rs1 - rs2` |
+| `and` | R | `rd = rs1 & rs2` (bit a bit) |
+| `or`  | R | `rd = rs1 \| rs2` (bit a bit) |
+| `lw`  | I | `rd = Mem[rs1 + imm]` |
+| `sw`  | S | `Mem[rs1 + imm] = rs2` |
+| `beq` | B | se `rs1 == rs2` (subtração dá zero), `PC = PC + imm` |
 
-<p align="center">
-  <img src="instructionset.png" width="100%" height="39%" />
-</p>
+![Formato das instruções](instructionset.png)
 
-<p align="center">
-⚠️ INFORMAÇÃO IMPORTANTE ⚠️
-</p>
-<p align="center">
-Para seguir em frente, é necessário compreender o que cada parte da instrução significa.
-</p>
+| Campo | Significado |
+|---|---|
+| `rs1`, `rs2` | registradores de origem |
+| `rd` | registrador de destino |
+| `imm` | valor imediato embutido na instrução |
+| `opcode` | identifica o tipo de instrução (R, I, S, B…) |
+| `funct3`, `funct7` | diferenciam instruções com o mesmo opcode (ex.: `add` × `sub`) |
 
-| Abreviação | Significado | Descrição |
-|------|-----|-----|
-|rs1| register source 1|endereço do primeiro registrador de uma operação|
-|rs2| register source 2|endereço do segundo registrador de uma operação|
-|rd| register destination| endereço do registrador de destino de alguma operação|
-|imm| immediate | um número de entrada |
-| opcode | operation code | é a parte da instrução que diferencia um tipo de instrução, tipo R, B, I ...|
-| funct | | são espaços usados para diferenciar instruções. Exemplo, add e sub tem o mesmo opcode, mas functs diferentes. Para diferenciar funct3 e funct7, conte quantos bits eles tem :) |
+> **Observação:** as memórias são endereçadas por palavra, ou seja, o PC avança de 1 em 1 (e não de 4 em 4 como no RISC-V padrão). A Memória de Dados tem 32 palavras de 32 bits e a de Instruções, 64.
 
+## Requisitos
 
-## Simulação
-Para simular o nosso código, usamos o Icarus Verilog e o GTKWave.
-Abaixo estão os ícones com os links para o site do Icarus Verilog e do GTKWave, contendo as instruções para a instalação.
-<p align="center">
-  <a href="http://iverilog.icarus.com/">
-    <img src="http://iverilog.icarus.com/_/rsrc/1302225644705/config/customLogo.gif?revision=5" height="28" width="101" />
-  </a>
-  <a href="https://gtkwave.sourceforge.net/">
-    <img src="https://i.ibb.co/s1ztX55/gtk.png" height="28" width="101" />
-  </a>
-</p>
+- [Icarus Verilog](https://steveicarus.github.io/iverilog/) (`iverilog` e `vvp`) — compilação e simulação
+- [GTKWave](https://gtkwave.sourceforge.net/) — visualização das formas de onda
+- Opcional: [Questa – Intel FPGA Edition](https://www.intel.com/content/www/us/en/software/programmable/quartus-prime/questa-edition.html) — foi usado nas testbenches individuais
+- Opcional: Intel Quartus Prime — síntese para FPGA Cyclone V
+- Opcional: `gcc` — para compilar o gerador da Memória de Dados
 
-Os comandos para rodar são:
+## Instalação
 
-``
-iverilog risc-v.v risc-v_TB.v -Wall -I ./ALU -I ./ALU/operations -I ./ALU/operations -I ./adders
-``
+Não há etapa de build: basta clonar o repositório e instalar as ferramentas.
 
-<p align="center">
-  ⚠️ ATENÇÃO ⚠️
-</p>
-<p align="center">
-  Caso ocorra algum erro ao importar algum arquivo, um problema provável é que o Icarus Verilog considerou o caminho do workspace como padrão de início do navegação até um arquivo. Caso tenha problema com isso, verifique este artigo no StackOverflow
- 
-</p>
-<p align="center">
-  <a href="https://stackoverflow.com/questions/47449489/how-to-include-files-in-icarus-verilog">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Stack_Overflow_logo.svg/1280px-Stack_Overflow_logo.svg.png" height="20" width="100" />
-  </a>
-</p>
+```bash
+git clone https://github.com/jofe2003/-rv32i-single-cycle-cpu.git
+cd -- -rv32i-single-cycle-cpu
+```
 
-Um arquivo nomeado "a.out" será gerado e, a seguir, deve ser executado.
+Ubuntu/Debian:
 
-``
-./a.out
-``
+```bash
+sudo apt install iverilog gtkwave
+```
 
-O arquivo com as ondas simuladas serão escritas no arquivo 'my_dumpfile.vcd", sendo agora necessário visualizá-las no GTKWave.
+macOS (Homebrew):
 
-``
+```bash
+brew install icarus-verilog
+brew install --cask gtkwave
+```
+
+## Uso
+
+### Simular o processador completo
+
+Na **raiz do repositório** (os `` `include `` usam caminhos relativos a ela):
+
+```bash
+iverilog -Wall -I ./ALU -I ./ALU/operations -I ./adders -o riscv.vvp risc-v.v risc-v_TB.v
+vvp riscv.vvp
 gtkwave my_dumpfile.vcd
-``
+```
 
-Por fim, uma tela parecida com essa aparecerá:
+A simulação gera `my_dumpfile.vcd` com todos os sinais do módulo `riscv`. No GTKWave, o resultado do jogo pode ser visto na Memória de Dados:
 
-<p align="center">
-  <img src="gtkwave.png" height="70%" width="100%" />
-</p>
+![GTKWave](gtkwave.png)
 
-Para as testbenches, foi utilizado o Questa*-Intel® FPGA Edition Software.
+Se der erro de arquivo não encontrado nos `` `include ``, confira se o comando foi executado na raiz e se as flags `-I` estão presentes ([discussão no Stack Overflow](https://stackoverflow.com/questions/47449489/how-to-include-files-in-icarus-verilog)).
 
-<p align="center">
-  <a href="https://www.intel.com.br/content/www/br/pt/software/programmable/quartus-prime/questa-edition.html">
-    <img src="https://logos-world.net/wp-content/uploads/2021/09/Intel-Emblem.png" height="28" width="75" />
-  </a>
-</p>
+### Testar um módulo isolado
 
-Para simular, dentro das respectivas pastas, basta realizar os seguintes comandos:
+Cada pasta tem o módulo e sua testbench. Com Icarus Verilog, por exemplo:
 
-`` vlog seuarquivo.v``
+```bash
+cd mux
+iverilog -o tb.vvp mux.v mux_TB.v && vvp tb.vvp
+```
 
-Com o seu código em Verilog compilado, agora basta compilar a testbench também:
+Para a ALU, que inclui as operações em `operations/`:
 
-``vlog testbench.v``
+```bash
+cd ALU
+iverilog -I operations -o tb.vvp ALU.v ALU_tb.v && vvp tb.vvp
+```
 
-Por fim, você pode inicializar a simulação:
+Com Questa:
 
-``vsim -c work.testbench``
+```bash
+vlog modulo.v
+vlog modulo_tb.v
+vsim -c work.testbench
+# dentro do simulador:
+run 10000ns
+quit
+```
 
-Um novo terminal será aberto para a simulação. Agora você pode simular por um tempo determinado por ti, observe atentamente a testbench para adicionar o valor adequado. Abaixo um exemplo:
+O tempo do `run` depende de cada testbench: veja os atrasos (`#...`) no arquivo para escolher um valor suficiente.
 
-``run 10000ns``
+### Mudar as entradas do jogo
 
-Após a simulação terminar de rodar e mostrar os possíveis erros, basta inserir o seguinte comando para sair do novo terminal aberto:
+O programa `DataMemory/generate_datamem.c` gera um novo `DataMemory.v` com a senha e as tentativas que você escolher:
 
-``quit``
+```bash
+cd DataMemory
+gcc generate_datamem.c -o generator
+printf "4\n3\n1\n2\n3\n" | ./generator > DataMemory.v
+```
 
-## Orçamento
-Como a implementação para FPGA foi feita na FPGA Cyclone V, tentamos fazer pesquisas nessa linha.
+Entradas, uma por linha: a senha (0–9), o número de tentativas *n* (0–9) e as *n* tentativas (0–9 cada). Atenção: isso **sobrescreve** o `DataMemory.v` atual.
 
-No market place do Google, encontramos kits de desenvolvimento custando pelo menos R$1500,00. Para a placa em si, só foram encontrador preços para a FPGA Cyclone IV, custando entre R$200,00 e R$300,00.
+## Estrutura de pastas
 
-Abaixo, o link para a página da FPGA Cyclone V:
+```
+.
+├── risc-v.v                 # módulo topo: liga todos os blocos do datapath
+├── risc-v_TB.v              # testbench do processador completo (reset + 100 µs)
+├── ALU/                     # ALU (add, sub, and, or) + testbench
+│   └── operations/          # somador/subtrator carry/borrow look-ahead, and, or
+├── ALU_Control/             # controle da ALU (decodifica ALUOp + funct)
+├── Control-Monocycle/       # unidade de controle principal (decodifica o opcode)
+├── ClockGenerator/          # gerador de clock (período de 100 ns)
+├── Registers/               # banco de 32 registradores e Program Counter
+├── ImmediateGenerator/      # extrai o imediato dos formatos I, S e B
+├── InstructionMemory/       # programa do jogo em binário + capturas da simulação
+├── DataMemory/              # memória de dados e o gerador em C
+├── mux/                     # multiplexador 2:1 de 32 bits
+├── adders/                  # somador de 32 bits (PC + 1, PC + imm)
+├── randomGenerator/         # gerador pseudoaleatório (não usado no topo; mantido por completude)
+├── Circuito.jpg             # diagrama do datapath
+├── sintetizado.jpeg         # circuito sintetizado
+├── riscv-fpga-pinplanner.png# mapeamento de pinos na FPGA
+├── instructionset.png       # formatos de instrução
+└── gtkwave.png              # exemplo de simulação
+```
 
-<p align="center">
-  <a href="https://www.intel.com/content/www/us/en/products/details/fpga/cyclone/v.html">
-    <img src="https://logos-world.net/wp-content/uploads/2021/09/Intel-Emblem.png" height="28" width="75" />
-  </a>
-</p>
+## Hardware
 
-Também encontramos uma FPGA que foca no aprendizado e desenvolvimento do RISC-V, chamando-se Perf-V. Sendo assim, deixamos uma referência a ela aqui:
-
-<p align="center">
-  <a href="https://perfv.org/">
-    <img src="https://perfv.org/images/logo.png" height="28" width="30" />
-  </a>
-</p>
-
-## Considerações finais
-
-Em cada uma das pastas, você encontrará os módulos utilizados para essa implementação, bem como seus respectivos testbenches. Além disso, há comentários nos códigos que explicam o comportamento de tais componentes.
-
-Espero que você se divirta bastante navegando pelos códigos e possa aprender mais ainda sobre Sistemas Digitais! :)
+A síntese foi feita para a FPGA **[Intel Cyclone V](https://www.intel.com/content/www/us/en/products/details/fpga/cyclone/v.html)**. No levantamento de custos feito em 2022, os kits de desenvolvimento com Cyclone V custavam a partir de R$ 1.500. Só achamos preço da placa avulsa para a geração anterior, a Cyclone IV, entre R$ 200 e R$ 300. Outra alternativa voltada ao ensino de RISC-V é a placa [Perf-V](https://perfv.org/).
 
 ## Referências
-Waterman, Andrew et al. The RISC-V Instruction Set Manual: Volume I: User-Level ISA. 2.2. SiFive Inc, 2017. Disponível em: https://riscv.org/wp-content/uploads/2017/05/riscv-spec-v2.2.pdf. Acesso em 30 de nov.
 
-Azevedo, Jean. You tube. Disponível em: https://www.youtube.com/@rjazevedo. Acesso em 30 de nov.
-
-PATTERSON, DAVID et al. Computer Organization and Design: The Hardware/Software Interface: RISC-V Edition. SiFive, Inc. 2018. Disponível em: http://home.ustc.edu.cn/~louwenqi/reference_books_tools/Computer%20Organization%20and%20Design%20RISC-V%20edition.pdf. Acesso em 30 de nov.
-
-Patterson, David et al. GUIA PRÁTICO RISC-V: Atlas de uma arquitetura aberta. 1. 2019. Disponível em: http://riscvbook.com/portuguese/guia-pratico-risc-v-1.0.0.pdf. Acesso em: 30 de nov.
-
-Albertini, Bruno. R. GitHub: Sistemas Digitais. Disponível em: https://balbertini.github.io/pages/sd-pt_BR.html#sd. Acesso em 30 de nov.
+- Waterman, A. et al. *The RISC-V Instruction Set Manual, Volume I: User-Level ISA*, v2.2. SiFive, 2017. https://riscv.org/wp-content/uploads/2017/05/riscv-spec-v2.2.pdf
+- Patterson, D.; Hennessy, J. *Computer Organization and Design: RISC-V Edition*. 2018.
+- Patterson, D.; Waterman, A. *Guia Prático RISC-V: Atlas de uma Arquitetura Aberta*. 2019. http://riscvbook.com/portuguese/guia-pratico-risc-v-1.0.0.pdf
+- Azevedo, R. J. Canal no YouTube. https://www.youtube.com/@rjazevedo
+- Albertini, B. *Sistemas Digitais*. https://balbertini.github.io/pages/sd-pt_BR.html#sd

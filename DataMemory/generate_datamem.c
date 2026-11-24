@@ -6,7 +6,7 @@ int main() {
     
     scanf("%d", &senha);
     scanf("%d", &numDeTentativas);
-    printf("Memory[0] = 32'd%d\nMemory[1] = 32'd%d;\n", senha, numDeTentativas);
+    printf("Memory[0] = 32'd%d;\nMemory[1] = 32'd%d;\n", senha, numDeTentativas);
 
     for (i = 0; i < numDeTentativas; i++) {
         scanf("%d", &tentativaAtual);

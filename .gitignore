@@ -1,0 +1,21 @@
+# Saídas de simulação (Icarus Verilog / GTKWave)
+*.vvp
+a.out
+*.vcd
+*.fst
+*.gtkw
+
+# Questa / ModelSim
+work/
+transcript
+*.wlf
+modelsim.ini
+
+# Quartus
+db/
+incremental_db/
+output_files/
+simulation/
+
+# Gerador da Memória de Dados
+DataMemory/generator

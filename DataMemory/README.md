@@ -6,7 +6,7 @@ Na memória de dados, são adicionadas as condições iniciais do programa que f
 Para tornar a implementação do Exercício-Programa da disciplina de MAC2166 mais divertida, foi criado um método para gerar as suas próprias tentativas de adivinhar o número aleatório.
 O arquivo "generate_datamem.c" na linguagem C pode ser compilado por meio do comando:
 
-``gcc generate_datamem.c -o gerator``
+``gcc generate_datamem.c -o generator``
 
 O arquivo generator será gerado. Ele deverá ser executado com o comando:
 
