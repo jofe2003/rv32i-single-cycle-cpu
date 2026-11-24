@@ -1,6 +1,6 @@
 # Memória de Dados
 
-Na memória de dados, são adicionadas as condições iniciais do programa que foi simulado no processador. A definição desse programa está no [README principal](../../README.md) e na documentação da [Memória de Instruções](instruction_memory.md).
+Na memória de dados, são adicionadas as condições iniciais do programa que foi simulado no processador. A definição desse programa está no [README principal](../../README.pt-BR.md) e na documentação da [Memória de Instruções](instruction_memory.md).
 
 ## Geração de Memórias de Dados automática
 Para tornar a implementação do Exercício-Programa da disciplina de MAC2166 mais divertida, foi criado um método para gerar as suas próprias tentativas de adivinhar o número aleatório.
